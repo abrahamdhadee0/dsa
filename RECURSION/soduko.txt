@@ -1,0 +1,50 @@
+class Solution {
+public:
+    bool canPut(int el,int row,int col,vector<vector<char>>& board){
+        // column check
+        for(int i=0;i<9;i++){
+            if(board[i][col]==el+'0')return false;
+        }
+        // row check
+        for(int j=0;j<9;j++){
+            if(board[row][j]==el+'0')return false;
+        }
+        // submatrix check
+        for(int k=0;k<9;k++){
+            if(board[3*(row/3)+k/3][3*(col/3)+k%3]==el+'0')return false;
+        }
+        return true;
+    }
+    void solve(int row,int col,vector<vector<char>>& board,bool &flag){
+        if(row>8||col>8){
+            flag=true;
+            return;
+        }
+        if(board[row][col]=='.'){
+            for(int el=1;el<=9;el++){
+                if(canPut(el,row,col,board)){
+                    board[row][col]=el+'0';
+                    if(col<8){
+                        solve(row,col+1,board,flag);
+                    }
+                    else{
+                        solve(row+1,0,board,flag);
+                    }
+                    if(!flag)board[row][col]='.';
+                }
+            }
+        }
+        else{
+            if(col<8){
+                solve(row,col+1,board,flag);
+            }
+            else{
+                solve(row+1,0,board,flag);
+            }
+        }
+    }
+    void solveSudoku(vector<vector<char>>& board) {
+        bool flag=false;
+        solve(0,0,board,flag);
+    }
+};
