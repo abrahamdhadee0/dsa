@@ -1,0 +1,4 @@
+node_modules/
+privatehaibhai/
+.env
+.DS_Store
